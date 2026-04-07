@@ -45,7 +45,27 @@ function App() {
     Cesium.RequestScheduler.maximumRequestsPerServer = 50
 
     const viewer = new Cesium.Viewer(containerRef.current, {
+      animation: false,
+      baseLayerPicker: false,
+      fullscreenButton: false,
+      vrButton: false,
+      geocoder: false,
+      homeButton: false,
+      infoBox: false,
+      sceneModePicker: false,
+      selectionIndicator: false,
+      navigationHelpButton: false,
+      navigationInstructionsInitiallyVisible: false,
+      scene3DOnly: true,
+      projectionPicker: false,
+      requestRenderMode: false,
+      targetFrameRate: 60,
+      skyBox: false,
+      shouldAnimate: true,
+      terrainShadows: Cesium.ShadowMode.DISABLED,
       terrain: Cesium.Terrain.fromWorldTerrain(),
+      timeline: false,
+      automaticallyTrackDataSourceClocks: false,
     })
     viewer.scene.globe.depthTestAgainstTerrain = true
     viewer.scene.debugShowFramesPerSecond = true
@@ -138,6 +158,11 @@ async function loadNewTilesets(viewer: Cesium.Viewer): Promise<Cesium.Cesium3DTi
     tileset.dynamicScreenSpaceError = true
     tileset.dynamicScreenSpaceErrorDensity = 0.00278
     tileset.dynamicScreenSpaceErrorFactor = 4.0
+    tileset.preloadWhenHidden = true;
+    tileset.preloadFlightDestinations = true;
+    tileset.cacheBytes = 512 * 1024 * 1024; // 512MB
+    tileset.maximumCacheOverflowBytes = 1024 * 1024 * 1024; // 1GB
+
     viewer.scene.primitives.add(tileset)
     tilesets.push(tileset)
   }
@@ -158,6 +183,12 @@ async function loadOldTilesets(viewer: Cesium.Viewer): Promise<Cesium.Cesium3DTi
       `https://pub-6c9dee2a5eec41b688fd8d1482ccf5e4.r2.dev/tokyo_PLATEAU_3dtiles/${id}/tileset.json`
     )
     if (viewer.isDestroyed()) break
+
+    tileset.preloadWhenHidden = true;
+    tileset.preloadFlightDestinations = true;
+    tileset.cacheBytes = 1024 * 1024 * 1024; // 1GB
+    tileset.maximumCacheOverflowBytes = 2048 * 1024 * 1024; // 2GB
+
     viewer.scene.primitives.add(tileset)
     tilesets.push(tileset)
   }
