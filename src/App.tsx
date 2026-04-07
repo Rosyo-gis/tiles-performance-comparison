@@ -5,11 +5,11 @@ import 'cesium/Build/Cesium/Widgets/widgets.css'
 type TilesetMode = 'new' | 'old'
 
 const INITIAL_CAMERA = {
-  destination: new Cesium.Cartesian3(-3964537.3040514886, 3353589.2071747687, 3695351.9151651273),
+  destination: new Cesium.Cartesian3(-3964537, 3353589, 3695351),
   orientation: {
-    heading: 6.0185465793142265,
-    pitch: -0.5415192982127444,
-    roll: 0.00005420496873842495,
+    heading: 6.018,
+    pitch: -0.541,
+    roll: 0.0,
   },
 }
 
@@ -19,7 +19,22 @@ function App() {
   const tilesetsRef = useRef<Cesium.Cesium3DTileset[]>([])
   const [mode, setMode] = useState<TilesetMode>('old')
   const [loadedMode, setLoadedMode] = useState<TilesetMode | null>(null)
+  const [isFlying, setIsFlying] = useState(false)
   const loading = mode !== loadedMode
+
+  const handleFly = () => {
+    const viewer = viewerRef.current
+    if (!viewer) return
+    setIsFlying(true)
+    flyToDestination(viewer, () => setIsFlying(false))
+  }
+
+  const handleCancelFly = () => {
+    const viewer = viewerRef.current
+    if (!viewer) return
+    viewer.scene.camera.cancelFlight()
+    setIsFlying(false)
+  }
 
   // Viewerを一度だけ初期化
   useEffect(() => {
@@ -85,6 +100,23 @@ function App() {
           </button>
         </div>
         {loading && <div style={loadingStyle}>読み込み中...</div>}
+        <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+          <button
+            style={buttonStyle(isFlying)}
+            onClick={handleFly}
+            disabled={isFlying}
+          >
+            飛行路線
+          </button>
+          {isFlying && (
+            <button
+              style={{ ...buttonStyle(false), background: '#ef4444', color: '#fff' }}
+              onClick={handleCancelFly}
+            >
+              取消
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -130,6 +162,21 @@ async function loadOldTilesets(viewer: Cesium.Viewer): Promise<Cesium.Cesium3DTi
     tilesets.push(tileset)
   }
   return tilesets
+}
+
+function flyToDestination(viewer: Cesium.Viewer, onComplete?: () => void) {
+  viewer.camera.setView(INITIAL_CAMERA)
+  viewer.scene.camera.flyTo({
+    destination: new Cesium.Cartesian3(-3960812, 3351565, 3697705),
+    orientation: {
+      heading: 6.018,
+      pitch: -0.541,
+      roll: 0.0,
+    },
+    duration: 30,
+    complete: onComplete,
+    cancel: onComplete,
+  })
 }
 
 // スタイル定義
