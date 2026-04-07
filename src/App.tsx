@@ -186,8 +186,8 @@ async function loadOldTilesets(viewer: Cesium.Viewer): Promise<Cesium.Cesium3DTi
 
     tileset.preloadWhenHidden = true;
     tileset.preloadFlightDestinations = true;
-    tileset.cacheBytes = 1024 * 1024 * 1024; // 1GB
-    tileset.maximumCacheOverflowBytes = 2048 * 1024 * 1024; // 2GB
+    tileset.cacheBytes = 512 * 1024 * 1024; // 512MB
+    tileset.maximumCacheOverflowBytes = 1024 * 1024 * 1024; // 1GB
 
     viewer.scene.primitives.add(tileset)
     tilesets.push(tileset)
