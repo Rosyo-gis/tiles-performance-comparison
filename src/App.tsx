@@ -41,8 +41,8 @@ function App() {
     if (!containerRef.current) return
 
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzOTlmNTc2Yy0wNDFmLTRkZGUtOGM3Yi0xYTA3MjU0NDdjZjIiLCJpZCI6Mjc5MzczLCJpYXQiOjE3NDA1ODI1Nzl9._p92XdVvZ0jbpPpntbggENw7fXWHeReuPiR2_van-j4'
-    Cesium.RequestScheduler.maximumRequests = 100
-    Cesium.RequestScheduler.maximumRequestsPerServer = 50
+    Cesium.RequestScheduler.maximumRequests = 50
+    Cesium.RequestScheduler.maximumRequestsPerServer = 10
 
     const viewer = new Cesium.Viewer(containerRef.current, {
       animation: false,
