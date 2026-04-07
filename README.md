@@ -80,9 +80,7 @@ npm run dev
 | 技術 | 用途 |
 |------|------|
 | React 19 + TypeScript | UI コンポーネント |
-| Vite | バンドラー |
 | CesiumJS 1.140 | 3D 地球・3D Tiles レンダリング |
-| vite-plugin-cesium | Cesium の Vite 統合 |
 
 ---
 
